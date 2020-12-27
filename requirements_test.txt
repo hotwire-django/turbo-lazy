@@ -6,3 +6,5 @@ codecov>=2.0.0
 gitpython
 invoke
 tox-venv
+pytest-cov
+pytest
