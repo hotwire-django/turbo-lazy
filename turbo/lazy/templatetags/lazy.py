@@ -6,7 +6,6 @@ from django import template
 from django.template.base import Token
 from django.template.loader import render_to_string
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 import turbo
 from turbo.lazy.views import encode
