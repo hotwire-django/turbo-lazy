@@ -19,7 +19,8 @@ setup(
     version='0.1.1',
     description='Turbo-Frame based Lazy Loading',
     long_description=long_description,
-    # url='https://github.com/pypa/sampleproject',  # Optional
+    long_description_content_type='text/markdown',
+    url='https://github.com/hotwire-django/turbo-lazy',
 
     author='Julian Feinauer',  # Optional
     author_email='j.feinauer@pragmaticminds.de',  # Optional
