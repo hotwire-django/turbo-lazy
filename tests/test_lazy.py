@@ -1,5 +1,3 @@
-import pytest
-
 from turbo.lazy.templatetags.lazy import is_int
 
 
