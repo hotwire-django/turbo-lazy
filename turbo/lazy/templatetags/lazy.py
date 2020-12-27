@@ -6,10 +6,13 @@ from django import template
 from django.template.base import Token
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
-from turbo.lazy.lazy import encode
+import turbo
+from turbo.lazy.views import encode
 
 register = template.Library()
+
 
 @register.simple_tag
 def lazy_import():
@@ -19,16 +22,23 @@ def lazy_import():
     return render_to_string('lazy/lazy_import.html')
 
 
+def get_view_path():
+    try:
+        return reverse(turbo.lazy.views.lazy)
+    except Exception:
+        raise Exception("Do you have the view function 'turbo.lazy.views.lazy' wired up in your URL configuration?")
+
+
 @register.simple_tag
 def lazy_link(view_name, *args, **kwargs):
     base_string = json.dumps({"view": view_name, "args": args, "kwargs": kwargs})
-    return f'{reverse("lazy")}?token={encode(base_string)}'
+    return f'{get_view_path()}?token={encode(base_string)}'
 
 
 @register.simple_tag
 def turbo_frame_link(id, view_name, *args, **kwargs):
     base_string = json.dumps({"id": id, "view": view_name, "args": args, "kwargs": kwargs})
-    return f'{reverse("lazy")}?token={encode(base_string)}'
+    return f'{get_view_path()}?token={encode(base_string)}'
 
 
 @register.tag("lazy")
@@ -87,9 +97,10 @@ class LazyNode(template.Node):
     def render(self, context):
         uid = str(uuid.uuid4())
         resolved_args = resolve_args(context, self.args)
-        return f'<turbo-frame id="{uid}" src="{turbo_frame_link(uid, self.view, *resolved_args)}">' \
-               f'   {self.nodelist.render(context)}' \
-               f'</turbo-frame>'
+        template_context = {"id": uid,
+                            "src": turbo_frame_link(uid, self.view, *resolved_args),
+                            "content": self.nodelist.render(context)}
+        return render_to_string('lazy/turbo_frame.html', template_context)
 
 
 @register.tag("include_view")
@@ -116,4 +127,4 @@ class ImportViewNode(template.Node):
         method_to_call = getattr(module, function)
         request = context['request']
         base_string = json.dumps({"view": self.view, "args": self.all_args})
-        return f'<a href="{reverse("lazy")}?token={encode(base_string)}">link</a><br>{method_to_call(request, 1).content.decode("utf-8")}'
+        return f'<a href="{get_view_path()}?token={encode(base_string)}">link</a><br>{method_to_call(request, 1).content.decode("utf-8")}'

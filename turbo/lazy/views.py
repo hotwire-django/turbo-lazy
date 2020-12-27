@@ -3,6 +3,7 @@ import importlib
 import json
 
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
 def lazy(request):
@@ -27,9 +28,7 @@ def lazy(request):
         return method_to_call(request, *args, **kwargs)
     else:
         response = method_to_call(request, *args, **kwargs)
-        return HttpResponse(content=bytes(f'<turbo-frame id={id}>' \
-               f'   {response.content.decode("utf-8")}' \
-               f'</turbo-frame>', 'utf-8'))
+        return render(request, 'lazy/turbo_frame.html', {"id": id, "content": response.content.decode('utf-8')})
 
 
 def decode(base_string) -> str:

@@ -30,9 +30,7 @@ setup(
         #   4 - Beta
         #   5 - Production/Stable
         'Development Status :: 3 - Alpha',
-
         'Intended Audience :: Developers',
-
         'License :: OSI Approved :: MIT License',
 
         # Specify the Python versions you support here. In particular, ensure
@@ -45,21 +43,17 @@ setup(
         'Programming Language :: Python :: 3 :: Only',
     ],
 
-    # This field adds keywords for your project which will appear on the
-    # project page. What does your project relate to?
-    #
-    # Note that this is a list of additional keywords, separated
-    # by commas, to be used to assist searching for the distribution in a
-    # larger catalog.
     keywords='turbo, hotwire, lazy',  # Optional
 
     packages=find_packages(),
+
+    package_data={'': ['templates/**/*.html']},
 
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
     # and refuse to install the project if the version does not match. See
     # https://packaging.python.org/guides/distributing-packages-using-setuptools/#python-requires
-    python_requires='>=3.5, <4',
+    python_requires='>=3.6, <4',
 
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
