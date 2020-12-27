@@ -1,14 +1,14 @@
 # Turbo-Lazy
 
-Basically it comes down to the following statememt
+Basically, it comes down to the following statement:
 
     {% lazy 'apps.core.partial_views._machine_card' poll_status.machine_id %}
         {% include 'core/partials/_machine_card_loading.html' with name=poll_status.name machine_id=poll_status.machine_id %}
     {% endlazy %}
 
-The content inside the lazy tag is rendered right away in a turbo-frame with a src tag that points to an auto generated URL where the view given lazy controller is called (with the parameters given in the controller). So this can be a slow loading view as its lazy loaded
-This is based on turbo-frames, i.e. the lazy loading is client initiated. With something like turbo-streams (and the django implementation) it would be possible to push the update from the server which would be even cooler (especialyl a single channel could be used fro multiple elements)
-So, the page will be rendered as
+The content inside the lazy tag is rendered right away in a turbo-frame with a src tag that points to an auto generated URL where the view given lazy controller is called (with the parameters given in the controller). So this can be a slow loading view as its lazy loaded.
+This is based on turbo-frames, i.e. the lazy loading is client initiated. With something like turbo-streams (and the django implementation), it would be possible to push the update from the server which would be even cooler (especially a single channel could be used for multiple elements).
+So, the page will be rendered as follows:
 
 ```{html}
 <turbo-frame id="1c87a216-6ad5-4320-861e-261caf3e5dd7" src="/lazy/?token=eyJpZCI6ICIxYzg3YTIxNi02YWQ1LTQzMjAtODYxZS0yNjFjYWYzZTVkZDciLCAidmlldyI6ICJhcHBzLmNvcmUucGFydGlhbF92aWV3cy5fbWFjaGluZV9jYXJkIiwgImFyZ3MiOiBbMV0sICJrd2FyZ3MiOiB7fX0=">   
