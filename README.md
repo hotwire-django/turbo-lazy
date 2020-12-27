@@ -45,4 +45,5 @@ a `<turbo-frame>` tag with the same `id` so that it will automatically swapped b
 ## Release Notes
 
 **0.1.1** - Several minor fixes
+
 **0.1.0** - Initial Release
