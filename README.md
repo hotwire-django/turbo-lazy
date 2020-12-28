@@ -42,6 +42,33 @@ And a call to `/lazy/?token=...` will return the response of calling the view fu
 `apps.core.partial_views._machine_card` with given positional argument `poll_status.machine_id` also wrapped inside 
 a `<turbo-frame>` tag with the same `id` so that it will automatically swapped by turboframe.
 
+## Example
+
+A complete example can be found under `example/django_example`.
+Go to this directory and proceed.
+
+Optionally, create a custom virtualenv
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+If you want to use the current snapshot of `turbo-lazy`install it via
+```
+pip install ../../
+```
+
+Then start everything via
+```
+python manage.py migrate
+python manage.py runserver
+```
+and go to
+```
+http://localhost:8000/
+```
+
 ## Release Notes
 
 **0.1.1** - Several minor fixes
