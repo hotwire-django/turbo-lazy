@@ -71,6 +71,11 @@ http://localhost:8000/
 
 ## Release Notes
 
-**0.1.1** - Several minor fixes
+**0.1.2**
+* Complete working Django Example
 
-**0.1.0** - Initial Release
+**0.1.1** 
+* Several minor fixes
+
+**0.1.0**
+* Initial Release
