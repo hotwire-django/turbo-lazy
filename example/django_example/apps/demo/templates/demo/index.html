@@ -1,0 +1,20 @@
+{% load lazy %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    {% lazy_import %}
+</head>
+<body>
+<ul>
+{% for i in numbers %}
+    <li>
+        {% lazy 'apps.demo.views.lazy_loaded' i %}
+            {% include 'demo/_placeholder.html' with id=i %}
+        {% endlazy %}
+    </li>
+{% endfor %}
+</ul>
+</body>
+</html>
