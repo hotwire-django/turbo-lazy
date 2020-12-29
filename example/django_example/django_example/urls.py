@@ -21,8 +21,9 @@ from apps.demo import views
 from turbo.lazy import views as turbo_views
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name="index"),
     path('admin/', admin.site.urls),
+    path('submit/', views.submit),
 
     # Lazy
     path('lazy/', turbo_views.lazy)

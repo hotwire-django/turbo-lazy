@@ -10,8 +10,6 @@ def lazy(request):
 
     context = json.loads(token)
 
-    print(f"Context: {context}")
-
     id = context.get('id')
     view = context.get('view')
     args = context.get('args')
