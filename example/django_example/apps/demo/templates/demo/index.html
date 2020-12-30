@@ -1,4 +1,4 @@
-{% load static lazy %}
+{% load static lazy crispy_forms_tags bootstrap_modal %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +81,10 @@
 <body>
 <div data-controller="submission">
     <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#my_modal">Open</button>
+    {% modal modal_id=my_modal %}
+        {% include_view 'apps.demo.views.NewEntry' %}
+    {% endmodal %}
     <button type="button" class="btn btn-primary" data-submission-target="button" data-action="click->submission#showForm"
             data-id="1">
         Launch demo modal ID 1
@@ -104,14 +108,11 @@
                             <div id="my_form_content">
                                     {% csrf_token %}
                                     <input type="hidden" id="form-id-field" name="id" data-modal-target="idfield" value="">
-                                    <label for="fname">First name:</label><br>
-                                    <input type="text" id="fname" name="fname"><br>
-                                    <label for="lname">Last name:</label><br>
-                                    <input type="text" id="lname" name="lname">
+                                    {{ form|crispy }}
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                             <button type="button" class="btn btn-secondary" data-action="modal#close">Close</button>
                         </div>
                     </form>
@@ -126,6 +127,12 @@
                 {% include 'demo/_placeholder.html' with id=i %}
             {% endlazy %}
         </li>
+    {% endfor %}
+</ul>
+<ul>
+    {% for i in numbers %}
+        <li><button type="button" class="btn btn-primary" data-submission-target="button" data-action="click->submission#showForm"
+                    data-id="2">Edit</button></li>
     {% endfor %}
 </ul>
 </body>

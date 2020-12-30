@@ -1,0 +1,22 @@
+<div class="modal fade" id="{{ modal_id }}" tabindex="-1" role="dialog" aria-labelledby="{{ modal_id }}-title"
+     aria-hidden="true" {{ data_attributes|safe }}>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="{{ modal_id }}-title" id="{{ modal_id }}-title">{{ title }}</h5>
+                <button type="button" class="close" aria-label="Close" data-action="modal#close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if turbo_frame_id %}
+                <turbo-frame id="edit_entry" data-modal-target="frame">
+                    {{ body }}
+                </turbo-frame>
+                {% else %}
+                {{ body }}
+                {% endif %}
+            </div>
+            {{ footer }}
+        </div>
+    </div>
+</div>

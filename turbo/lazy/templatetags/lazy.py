@@ -1,11 +1,13 @@
 import importlib
+import inspect
 import json
 import uuid
 
 from django import template
 from django.template.base import Token
 from django.template.loader import render_to_string
-from django.urls import reverse
+from django.template.response import TemplateResponse
+from django.urls import reverse, resolve, Resolver404
 
 import turbo
 from turbo.lazy.views import encode
@@ -118,12 +120,28 @@ class ImportViewNode(template.Node):
         self.all_args = all_args
 
     def render(self, context):
-        view_parts = self.view.split(".")
-        module_name = '.'.join(view_parts[:-1])
-        function = view_parts[-1]
+        try:
+            method_call = resolve(self.view).func
+        except Resolver404:
+            view_parts = self.view.split(".")
+            module_name = '.'.join(view_parts[:-1])
+            function = view_parts[-1]
 
-        module = importlib.import_module(module_name)
-        method_to_call = getattr(module, function)
+            module = importlib.import_module(module_name)
+            view_object = getattr(module, function)
+
+            base_string = json.dumps({"view": self.view, "args": self.all_args})
+
+            if inspect.isclass(view_object):
+                method_call = view_object.as_view()
+            elif callable(view_object):
+                method_call = view_object
+            else:
+                raise Exception("WHat should this be??")
         request = context['request']
-        base_string = json.dumps({"view": self.view, "args": self.all_args})
-        return f'<a href="{get_view_path()}?token={encode(base_string)}">link</a><br>{method_to_call(request, 1).content.decode("utf-8")}'
+        response = method_call(request)
+        if isinstance(response, TemplateResponse):
+            response.render()
+        content = response.content.decode("utf-8")
+        return content
+        # return f'<a href="{get_view_path()}?token={encode(base_string)}">link</a><br>{content}'

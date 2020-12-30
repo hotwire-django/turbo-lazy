@@ -25,6 +25,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('submit/', views.submit),
 
+    path('new/', views.NewEntry.as_view()),
+    path('update/<int:pk>', views.UpdateEntry.as_view(), name="edit_entry"),
+    path('list/', views.list_entries, name='list'),
+
     # Lazy
     path('lazy/', turbo_views.lazy)
 ]
