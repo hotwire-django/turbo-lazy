@@ -17,64 +17,7 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
 
-    {#    <script src="{% static 'js/application.js' %}" type="module"></script>#}
-    <script>
-        (() => {
-            const application = Stimulus.Application.start()
-
-            application.register("modalform", class extends Stimulus.Controller {
-
-                static targets = ["modal"]
-                static values = {url: String}
-
-                connect() {
-                }
-
-                showForm(event) {
-                    let button_id = event.currentTarget.dataset['url']
-                    this.modalTarget.modal.open(button_id);
-                }
-            })
-
-            application.register("modal", class extends Stimulus.Controller {
-
-                static targets = [ "frame" ]
-
-                initialize() {
-                    document.documentElement
-                        .addEventListener('turbo:submit-end', event => this.submitEnd(event))
-                }
-
-                connect() {
-                    this.element[this.identifier] = this;
-                }
-
-                open(url) {
-                    this.frameTarget.setAttribute("src", url)
-                    this.element.setAttribute("style", "display: block;")
-                    this.element.classList.add("show")
-                    document.body.classList.add("modal-open");
-                    document.body.innerHTML += '<div class="modal-backdrop fade show"></div>';
-                }
-
-                close() {
-                    document.body.classList.remove("modal-open");
-                    this.element.removeAttribute("style");
-                    this.element.classList.remove("show");
-                    document.getElementsByClassName("modal-backdrop")[0].remove();
-                }
-
-                submitEnd(event) {
-                    let response = event.detail.formSubmission.result.fetchResponse.response
-
-                    if (response.redirected) {
-                        // Was a success, handle
-                        window.location = response.url;
-                    }
-                }
-            })
-        })()
-    </script>
+        <script src="{% static 'js/application.js' %}" type="module"></script>
 </head>
 <body>
 <div data-controller="modalform">
@@ -95,11 +38,6 @@
 
     {% modal modal_id="exampleModal" dataController="modal" dataModalformTarget="modal" turbo="edit_entry" %}
     {% endmodal %}
-
-{#    {% modal modal_id="exampleModal" dataController="modal" dataModalformTarget="modal" %}#}
-{#        <turbo-frame id="edit_entry" data-modal-target="frame">#}
-{#        </turbo-frame>#}
-{#    {% endmodal %}#}
 
 </div>
 </body>

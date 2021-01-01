@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 3rd party
     'turbo.lazy',
     'crispy_forms',
+    'webpack_tools',
     
     # From project
     'apps.demo',
