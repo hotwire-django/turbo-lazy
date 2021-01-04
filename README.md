@@ -71,6 +71,10 @@ http://localhost:8000/
 
 ## Release Notes
 
+**0.2.0**
+* Package renamed to 'turbo_lazy' and also root folder renamed to 'turbo_lazy'.
+* Template Tag `{% include_view %}` was added to integrate complete views into templates (in module `partials`)
+
 **0.1.2**
 * Complete working Django Example
 
