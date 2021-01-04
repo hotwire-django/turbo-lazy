@@ -63,6 +63,7 @@ setup(
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'Django>=3'
+        'Django>=3',
+        'django-tag-parser>=3.2'
     ],
 )
