@@ -1,11 +1,8 @@
 import random
 from time import sleep
 
-from django.shortcuts import render, redirect
-
-from apps.streams.response import TurboFrameTemplateResponse
-
 from apps.streams.response import TurboStreamTemplateResponse
+from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -20,15 +17,10 @@ def lazy_loaded(request, number):
 
 
 def submit(request):
-    print(f'Got Submission: {request.POST}')
-    print(f'Headers: {request.headers.get("Accept")}')
     if not hasattr(request, "accept_turbo_stream"):
-        print("No accept_turbo_stream!")
         return redirect('index')
-    print(f'Accepts: {request.accept_turbo_stream}')
 
     if request.accept_turbo_stream:
-        print(f'Returning the Turbo Frame...')
         return TurboStreamTemplateResponse(
             request,
             "demo/replacement.html",
