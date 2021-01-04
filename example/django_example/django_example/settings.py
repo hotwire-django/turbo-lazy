@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3rd party
-    'turbo.lazy',
+    'turbo_lazy',
     
     # From project
     'apps.demo',

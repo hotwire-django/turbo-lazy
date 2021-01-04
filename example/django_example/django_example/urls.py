@@ -18,7 +18,7 @@ from django.urls import path
 
 from apps.demo import views
 
-from turbo.lazy import views as turbo_views
+from turbo_lazy import views as turbo_views
 
 urlpatterns = [
     path('', views.index, name="index"),

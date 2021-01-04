@@ -1,4 +1,3 @@
-import importlib
 import json
 import uuid
 
@@ -7,8 +6,8 @@ from django.template.base import Token
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-import turbo
-from turbo.lazy.views import encode
+import turbo_lazy
+from turbo_lazy.views import encode
 
 register = template.Library()
 
@@ -18,14 +17,14 @@ def lazy_import():
     """
     Automatically adds the script tag with the CDN link for the Import section (should be in the header)
     """
-    return render_to_string('lazy/lazy_import.html')
+    return render_to_string('turbo_lazy/lazy_import.html')
 
 
 def get_view_path():
     try:
-        return reverse(turbo.lazy.views.lazy)
+        return reverse(turbo_lazy.views.lazy)
     except Exception:
-        raise Exception("Do you have the view function 'turbo.lazy.views.lazy' wired up in your URL configuration?")
+        raise Exception("Do you have the view function 'turbo_lazy.views.lazy' wired up in your URL configuration?")
 
 
 @register.simple_tag
@@ -99,31 +98,5 @@ class LazyNode(template.Node):
         template_context = {"id": uid,
                             "src": turbo_frame_link(uid, self.view, *resolved_args),
                             "content": self.nodelist.render(context)}
-        return render_to_string('lazy/turbo_frame.html', template_context)
-
-
-@register.tag("include_view")
-def include_view(parser, token: Token):
-    splitted = token.split_contents()[1:]
-    assert len(splitted) >= 1
-    view = splitted[0].strip("'").strip('"')
-    args = splitted[1:]
-    return ImportViewNode(view, args)
-
-
-class ImportViewNode(template.Node):
-
-    def __init__(self, view, all_args):
-        self.view = view
-        self.all_args = all_args
-
-    def render(self, context):
-        view_parts = self.view.split(".")
-        module_name = '.'.join(view_parts[:-1])
-        function = view_parts[-1]
-
-        module = importlib.import_module(module_name)
-        method_to_call = getattr(module, function)
-        request = context['request']
-        base_string = json.dumps({"view": self.view, "args": self.all_args})
-        return f'<a href="{get_view_path()}?token={encode(base_string)}">link</a><br>{method_to_call(request, 1).content.decode("utf-8")}'
+        return render_to_string(
+            'turbo_lazy/turbo_frame.html', template_context)

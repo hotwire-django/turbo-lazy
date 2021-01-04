@@ -15,8 +15,8 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 # Fields marked as "Optional" may be commented out.
 
 setup(
-    name='turbo-lazy',
-    version='0.1.2',
+    name='turbo_lazy',
+    version='0.2.0',
     description='Turbo-Frame based Lazy Loading',
     long_description=long_description,
     long_description_content_type='text/markdown',
