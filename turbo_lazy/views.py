@@ -25,7 +25,7 @@ def lazy(request):
         return method_to_call(request, *args, **kwargs)
     else:
         response = method_to_call(request, *args, **kwargs)
-        return render(request, 'lazy/turbo_frame.html', {"id": id, "content": response.content.decode('utf-8')})
+        return render(request, 'turbo_lazy/turbo_frame.html', {"id": id, "content": response.content.decode('utf-8')})
 
 
 def decode(base_string) -> str:

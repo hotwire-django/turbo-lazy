@@ -1,139 +1,20 @@
-{% load static lazy crispy_forms_tags bootstrap_modal %}
+{% load lazy %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
     {% lazy_import %}
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
-            integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
-            crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
-
-    {#    <script src="{% static 'js/application.js' %}" type="module"></script>#}
-    <script>
-        (() => {
-            const application = Stimulus.Application.start()
-
-            application.register("submission", class extends Stimulus.Controller {
-
-                static classes = ["showing"]
-                static targets = ["output" ]
-                static values = {id: Number}
-
-                connect() {
-                    console.log("Hello, Stimulus!", this.element)
-                }
-
-                showForm(event) {
-                    let button_id = event.currentTarget.dataset['id']
-                    console.log("Called with id ", button_id)
-                    this.outputTarget.modal.open(button_id);
-                }
-            })
-
-            application.register("modal", class extends Stimulus.Controller {
-
-                static targets = [ "idfield" ]
-
-                connect() {
-                    console.log("Hello, Modal!", this.element)
-                    this.element[this.identifier] = this;
-                }
-
-                open(id) {
-                    console.log("Got Called with id ", id)
-                    this.element.setAttribute("style", "display: block;")
-                    this.element.classList.add("show")
-                    document.body.classList.add("modal-open");
-                    document.body.innerHTML += '<div class="modal-backdrop fade show"></div>';
-                    // Set ID Value
-                    if (this.hasIdfieldTarget) {
-                        console.log("Setting to field ", this.idfieldTarget)
-                        document.getElementById(this.idfieldTarget.id).value = id
-                    } else {
-                        console.log("I have no id field :(")
-                    }
-                }
-
-                submit() {
-                    console.log("I would have submitted that by now...")
-                }
-
-                close(event) {
-                        document.body.classList.remove("modal-open");
-                        this.element.removeAttribute("style");
-                        this.element.classList.remove("show");
-                        document.getElementsByClassName("modal-backdrop")[0].remove();
-                }
-
-            })
-        })()
-    </script>
 </head>
 <body>
-<div data-controller="submission">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#my_modal">Open</button>
-    {% modal modal_id=my_modal %}
-        {% include_view 'apps.demo.views.NewEntry' %}
-    {% endmodal %}
-    <button type="button" class="btn btn-primary" data-submission-target="button" data-action="click->submission#showForm"
-            data-id="1">
-        Launch demo modal ID 1
-    </button>
-    <button type="button" class="btn btn-primary" data-submission-target="button" data-action="click->submission#showForm"
-            data-id="2">
-        Launch demo modal ID 2
-    </button>
-        <div class="modal" id="exampleModal" data-controller="modal" data-submission-target="output" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" aria-label="Close" data-action="modal#close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="/submit/" method="post">
-                        <div class="modal-body">
-                            <div id="my_form_content">
-                                    {% csrf_token %}
-                                    <input type="hidden" id="form-id-field" name="id" data-modal-target="idfield" value="">
-                                    {{ form|crispy }}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                            <button type="button" class="btn btn-secondary" data-action="modal#close">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-</div>
 <ul>
-    {% for i in numbers %}
-        <li>
-            {% lazy 'apps.demo.views.lazy_loaded' i %}
-                {% include 'demo/_placeholder.html' with id=i %}
-            {% endlazy %}
-        </li>
-    {% endfor %}
-</ul>
-<ul>
-    {% for i in numbers %}
-        <li><button type="button" class="btn btn-primary" data-submission-target="button" data-action="click->submission#showForm"
-                    data-id="2">Edit</button></li>
-    {% endfor %}
+{% for i in numbers %}
+    <li>
+        {% lazy 'apps.demo.views.lazy_loaded' i %}
+            {% include 'demo/_placeholder.html' with id=i %}
+        {% endlazy %}
+    </li>
+{% endfor %}
 </ul>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from turbo.lazy.templatetags.lazy import is_int
+from turbo_lazy.templatetags.lazy import is_int
 
 
 def test_is_int_with_int():
