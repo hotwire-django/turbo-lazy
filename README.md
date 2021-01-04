@@ -71,7 +71,7 @@ http://localhost:8000/
 
 ## Release Notes
 
-**0.2.2 (in preparation)**
+**0.2.2**
 * The install dependency `django-tag-parser>=3.2` was missing in `setup.py`
 
 **0.2.1**
